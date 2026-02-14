@@ -69,8 +69,21 @@ gh release create vX.Y.Z --title "vX.Y.Z - Title" --notes "Description of change
 improving-qr/
 ├── index.html           # Main application (HTML, CSS, JS all-in-one)
 ├── improving_splash.svg # Improving logo for QR code overlay
+├── README.md            # Project documentation with brand colors
+├── LICENSE              # Proprietary license (Improving)
 └── AGENTS.md            # This file
 ```
+
+## Brand Colors
+
+Use these approved brand colors (see README.md for full details):
+
+- **Improving Blue:** `#005596` (primary, QR dots)
+- **Improving Light Blue:** `#4597D3` (secondary, corner dots)
+- **Green Accent:** `#5BC2A7` (download buttons)
+- **Orange Accent:** `#F5BB41` (copy buttons)
+- **Gray Accent:** `#A7A8A9` (disabled states)
+- **Purple Accent:** `#9D1D96`
 
 ## Key Implementation Details
 
@@ -78,4 +91,9 @@ improving-qr/
 - **Error Correction:** Uses level H (highest) to allow logo integration while maintaining scannability
 - **Logo Integration:** The library natively supports embedding logos, creating proper space for the image rather than overlaying
 - **Styling:** Rounded dots, extra-rounded corner squares, dot corner dots
+- **Brand Colors:** QR uses Improving Blue for dots, Light Blue for corner dots
 - **Deployment:** Automatic via GitHub Pages on push to `main` branch
+
+## License
+
+This project is proprietary and owned by Improving. See LICENSE file.
