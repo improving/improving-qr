@@ -176,7 +176,7 @@
 
     <div id="toast" class="toast"></div>
 
-    <div class="version">v1.4.2</div>
+    <div class="version">v1.4.3</div>
 
     <script>
         let qrCode = null;
@@ -277,7 +277,8 @@
                 } else if (format === 'svg') {
                     const blob = await qrCode.getRawData('svg');
                     const svgText = await blob.text();
-                    const htmlBlob = new Blob([svgText], { type: 'text/html' });
+                    const html = `<html><body>${svgText}</body></html>`;
+                    const htmlBlob = new Blob([html], { type: 'text/html' });
                     await navigator.clipboard.write([
                         new ClipboardItem({ 'text/html': htmlBlob })
                     ]);
