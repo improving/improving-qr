@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Generator</title>
-    <script src="https://unpkg.com/qr-code-styling@1.6.0-rc.1/lib/qr-code-styling.js">
+    <script src="https://unpkg.com/qr-code-styling@1.6.0-rc.1/lib/qr-code-styling.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -21,7 +21,7 @@
 
         h1 {
             text-align: center;
-            color: #333;
+            color: #005596;
             margin-bottom: 30px;
         }
 
@@ -42,13 +42,13 @@
         }
 
         input[type="text"]:focus {
-            border-color: #007bff;
+            border-color: #005596;
         }
 
         button {
             padding: 12px 24px;
             font-size: 16px;
-            background: #007bff;
+            background: #005596;
             color: white;
             border: none;
             border-radius: 8px;
@@ -57,11 +57,11 @@
         }
 
         button:hover {
-            background: #0056b3;
+            background: #4597D3;
         }
 
         button:disabled {
-            background: #ccc;
+            background: #A7A8A9;
             cursor: not-allowed;
         }
 
@@ -79,16 +79,32 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        #qrcode img {
+        #qrcode canvas, #qrcode svg {
             display: block;
         }
 
-        .download-btn {
-            background: #28a745;
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
         }
 
-        .download-btn:hover {
-            background: #1e7e34;
+        .btn-download {
+            background: #5BC2A7;
+        }
+
+        .btn-download:hover {
+            background: #4aa08a;
+        }
+
+        .btn-copy {
+            background: #F5BB41;
+            color: #333;
+        }
+
+        .btn-copy:hover {
+            background: #d9a438;
         }
 
         .hidden {
@@ -99,6 +115,24 @@
             color: #dc3545;
             text-align: center;
             margin-top: 10px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
         }
 
         .version {
@@ -120,12 +154,19 @@
 
     <div class="qr-container">
         <div id="qrcode"></div>
-        <button id="downloadBtn" class="download-btn hidden" onclick="downloadQR()">Download QR Code</button>
+        <div id="buttonGroup" class="button-group hidden">
+            <button class="btn-download" onclick="downloadQR('png')">Download PNG</button>
+            <button class="btn-download" onclick="downloadQR('svg')">Download SVG</button>
+            <button class="btn-copy" onclick="copyQR('png')">Copy PNG</button>
+            <button class="btn-copy" onclick="copyQR('svg')">Copy SVG</button>
+        </div>
     </div>
 
     <p id="error" class="error hidden"></p>
 
-    <div class="version">v1.3.0</div>
+    <div id="toast" class="toast"></div>
+
+    <div class="version">v1.4.0</div>
 
     <script>
         let qrCode = null;
@@ -137,10 +178,17 @@
             }
         });
 
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
         function generateQR() {
             const url = document.getElementById('urlInput').value.trim();
             const qrcodeDiv = document.getElementById('qrcode');
-            const downloadBtn = document.getElementById('downloadBtn');
+            const buttonGroup = document.getElementById('buttonGroup');
             const errorEl = document.getElementById('error');
 
             // Reset state
@@ -164,15 +212,15 @@
             // Clear previous QR code
             qrcodeDiv.innerHTML = '';
 
-            // Generate new QR code with embedded logo
+            // Generate new QR code with embedded logo and brand colors
             qrCode = new QRCodeStyling({
                 width: 256,
                 height: 256,
-                type: 'canvas',
+                type: 'svg',
                 data: url,
                 image: 'improving_splash.svg',
                 dotsOptions: {
-                    color: '#000000',
+                    color: '#005596',
                     type: 'rounded'
                 },
                 backgroundOptions: {
@@ -184,9 +232,11 @@
                     imageSize: 0.4
                 },
                 cornersSquareOptions: {
+                    color: '#005596',
                     type: 'extra-rounded'
                 },
                 cornersDotOptions: {
+                    color: '#4597D3',
                     type: 'dot'
                 },
                 qrOptions: {
@@ -195,12 +245,33 @@
             });
 
             qrCode.append(qrcodeDiv);
-            downloadBtn.classList.remove('hidden');
+            buttonGroup.classList.remove('hidden');
         }
 
-        function downloadQR() {
+        function downloadQR(format) {
             if (qrCode) {
-                qrCode.download({ name: 'qrcode', extension: 'png' });
+                qrCode.download({ name: 'improving-qrcode', extension: format });
+            }
+        }
+
+        async function copyQR(format) {
+            if (!qrCode) return;
+
+            try {
+                if (format === 'png') {
+                    const blob = await qrCode.getRawData('png');
+                    await navigator.clipboard.write([
+                        new ClipboardItem({ 'image/png': blob })
+                    ]);
+                    showToast('PNG copied to clipboard!');
+                } else if (format === 'svg') {
+                    const blob = await qrCode.getRawData('svg');
+                    const text = await blob.text();
+                    await navigator.clipboard.writeText(text);
+                    showToast('SVG copied to clipboard!');
+                }
+            } catch (err) {
+                showToast('Failed to copy: ' + err.message);
             }
         }
     </script>
