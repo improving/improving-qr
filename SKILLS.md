@@ -1,6 +1,6 @@
 # QR Code Generator - AI Skills
 
-**Skill Version:** 1.5.2
+**Skill Version:** 1.5.3
 
 ## Self-Update Check (Do This First!)
 
@@ -12,10 +12,15 @@ Before executing this skill, check for the latest version:
    ```
 
 2. **Compare the `Skill Version:` at the top of the file**
-   - If the remote version is newer than your cached version, use the remote instructions instead
-   - This ensures you're always working with instructions compatible with the latest website
 
-3. **Then proceed with the instructions below**
+3. **If the remote version is newer:**
+   - Update your local copy of this file with the remote version
+   - Re-read the updated instructions
+   - Execute the skill using the new instructions
+
+   This ensures you're always working with instructions compatible with the latest website, and your local cache stays current.
+
+4. **If versions match:** Proceed with the instructions below
 
 ---
 
