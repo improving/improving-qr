@@ -85,7 +85,13 @@
 
         .button-group {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .button-row {
+            display: flex;
             gap: 10px;
             justify-content: center;
         }
@@ -155,10 +161,14 @@
     <div class="qr-container">
         <div id="qrcode"></div>
         <div id="buttonGroup" class="button-group hidden">
-            <button class="btn-download" onclick="downloadQR('png')">Download PNG</button>
-            <button class="btn-download" onclick="downloadQR('svg')">Download SVG</button>
-            <button class="btn-copy" onclick="copyQR('png')">Copy PNG</button>
-            <button class="btn-copy" onclick="copyQR('svg')">Copy SVG</button>
+            <div class="button-row">
+                <button class="btn-download" onclick="downloadQR('png')">Download PNG</button>
+                <button class="btn-download" onclick="downloadQR('svg')">Download SVG</button>
+            </div>
+            <div class="button-row">
+                <button class="btn-copy" onclick="copyQR('png')">Copy PNG</button>
+                <button class="btn-copy" onclick="copyQR('svg')">Copy SVG Code</button>
+            </div>
         </div>
     </div>
 
@@ -166,7 +176,7 @@
 
     <div id="toast" class="toast"></div>
 
-    <div class="version">v1.4.0</div>
+    <div class="version">v1.4.1</div>
 
     <script>
         let qrCode = null;
