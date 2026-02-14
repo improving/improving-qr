@@ -176,7 +176,7 @@
 
     <div id="toast" class="toast"></div>
 
-    <div class="version">v1.4.3</div>
+    <div class="version">v1.5.0</div>
 
     <script>
         let qrCode = null;
@@ -187,6 +187,31 @@
                 generateQR();
             }
         });
+
+        // Check for URL parameter on page load
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const url = params.get('url');
+            if (url) {
+                document.getElementById('urlInput').value = url;
+                // Wait for page to fully load before generating
+                if (document.readyState === 'complete') {
+                    generateQR();
+                } else {
+                    window.addEventListener('load', generateQR);
+                }
+            }
+        })();
+
+        // Expose function to get raw SVG (for programmatic access)
+        async function getRawSVG() {
+            if (!qrCode) return null;
+            const blob = await qrCode.getRawData('svg');
+            return await blob.text();
+        }
+
+        // Expose to window for external access
+        window.getQRCodeSVG = getRawSVG;
 
         function showToast(message) {
             const toast = document.getElementById('toast');
