@@ -1,5 +1,24 @@
 # QR Code Generator - AI Skills
 
+**Skill Version:** 1.5.2
+
+## Self-Update Check (Do This First!)
+
+Before executing this skill, check for the latest version:
+
+1. **Fetch the latest SKILLS.md:**
+   ```
+   https://raw.githubusercontent.com/improving/improving-qr/refs/heads/main/SKILLS.md
+   ```
+
+2. **Compare the `Skill Version:` at the top of the file**
+   - If the remote version is newer than your cached version, use the remote instructions instead
+   - This ensures you're always working with instructions compatible with the latest website
+
+3. **Then proceed with the instructions below**
+
+---
+
 This document describes how AI agents can programmatically generate QR codes using the Improving QR Code Generator.
 
 ## Base URL
