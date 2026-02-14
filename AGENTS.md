@@ -74,7 +74,8 @@ improving-qr/
 
 ## Key Implementation Details
 
-- **QR Library:** Uses qrcodejs from CDN (`https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js`)
-- **Error Correction:** Uses level H (highest) to allow logo overlay while maintaining scannability
-- **Logo Size:** ~22% of QR code size, with white circular background
+- **QR Library:** Uses qr-code-styling from CDN (`https://unpkg.com/qr-code-styling@1.6.0-rc.1/lib/qr-code-styling.js`)
+- **Error Correction:** Uses level H (highest) to allow logo integration while maintaining scannability
+- **Logo Integration:** The library natively supports embedding logos, creating proper space for the image rather than overlaying
+- **Styling:** Rounded dots, extra-rounded corner squares, dot corner dots
 - **Deployment:** Automatic via GitHub Pages on push to `main` branch

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Generator</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/qr-code-styling@1.6.0-rc.1/lib/qr-code-styling.js">
     <style>
         * {
             box-sizing: border-box;
@@ -125,14 +125,10 @@
 
     <p id="error" class="error hidden"></p>
 
-    <div class="version">v1.2.1</div>
+    <div class="version">v1.3.0</div>
 
     <script>
-        let qrcode = null;
-
-        // Preload the logo
-        const logoImg = new Image();
-        logoImg.src = 'improving_splash.svg';
+        let qrCode = null;
 
         // Generate on Enter key
         document.getElementById('urlInput').addEventListener('keypress', function(e) {
@@ -168,62 +164,43 @@
             // Clear previous QR code
             qrcodeDiv.innerHTML = '';
 
-            // Generate new QR code
-            qrcode = new QRCode(qrcodeDiv, {
-                text: url,
+            // Generate new QR code with embedded logo
+            qrCode = new QRCodeStyling({
                 width: 256,
                 height: 256,
-                colorDark: '#000000',
-                colorLight: '#ffffff',
-                correctLevel: QRCode.CorrectLevel.H
+                type: 'canvas',
+                data: url,
+                image: 'improving_splash.svg',
+                dotsOptions: {
+                    color: '#000000',
+                    type: 'rounded'
+                },
+                backgroundOptions: {
+                    color: '#ffffff'
+                },
+                imageOptions: {
+                    crossOrigin: 'anonymous',
+                    margin: 5,
+                    imageSize: 0.4
+                },
+                cornersSquareOptions: {
+                    type: 'extra-rounded'
+                },
+                cornersDotOptions: {
+                    type: 'dot'
+                },
+                qrOptions: {
+                    errorCorrectionLevel: 'H'
+                }
             });
 
-            // Overlay logo after QR code renders
-            setTimeout(() => addLogoToQR(), 50);
-
+            qrCode.append(qrcodeDiv);
             downloadBtn.classList.remove('hidden');
         }
 
-        function addLogoToQR() {
-            const canvas = document.querySelector('#qrcode canvas');
-            if (!canvas || !logoImg.complete) {
-                // Retry if not ready
-                setTimeout(() => addLogoToQR(), 50);
-                return;
-            }
-
-            const ctx = canvas.getContext('2d');
-            const canvasSize = canvas.width;
-
-            // Logo size ~22% of QR code for good scannability
-            const logoSize = canvasSize * 0.22;
-            const logoX = (canvasSize - logoSize) / 2;
-            const logoY = (canvasSize - logoSize) / 2;
-
-            // Draw white background circle behind logo
-            const padding = 8;
-            ctx.fillStyle = '#ffffff';
-            ctx.beginPath();
-            ctx.arc(canvasSize / 2, canvasSize / 2, (logoSize / 2) + padding, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Draw the logo
-            ctx.drawImage(logoImg, logoX, logoY, logoSize, logoSize);
-
-            // Update the image element that qrcodejs creates
-            const img = document.querySelector('#qrcode img');
-            if (img) {
-                img.src = canvas.toDataURL('image/png');
-            }
-        }
-
         function downloadQR() {
-            const canvas = document.querySelector('#qrcode canvas');
-            if (canvas) {
-                const link = document.createElement('a');
-                link.download = 'qrcode.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
+            if (qrCode) {
+                qrCode.download({ name: 'qrcode', extension: 'png' });
             }
         }
     </script>
